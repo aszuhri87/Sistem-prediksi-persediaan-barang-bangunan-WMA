@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8mb4" collation="utf8mb4_general_ci">ta_eko</database>
+</source>
+<canvas zoom="90">
+<tables>
+<table name="td_obat_stok" view="colnames">
+<left>302</left>
+<top>250</top>
+<width>121</width>
+<height>144</height>
+<sql_create_table>CREATE TABLE `td_obat_stok` (
+  `id_obat_stok` int(11) NOT NULL AUTO_INCREMENT,
+  `referensi` varchar(50) DEFAULT NULL,
+  `stok` int(11) NOT NULL,
+  `kadaluarsa` date NOT NULL,
+  `id_obat` int(11) NOT NULL,
+  PRIMARY KEY (`id_obat_stok`),
+  KEY `id_obat` (`id_obat`),
+  CONSTRAINT `td_obat_stok_ibfk_1` FOREIGN KEY (`id_obat`) REFERENCES `tm_obat` (`id_obat`)
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="td_pembelian_obat" view="colnames">
+<left>633</left>
+<top>250</top>
+<width>167</width>
+<height>177</height>
+<sql_create_table>CREATE TABLE `td_pembelian_obat` (
+  `id_pembelian_obat` int(11) NOT NULL AUTO_INCREMENT,
+  `id_pembelian` int(11) NOT NULL,
+  `id_obat` int(11) DEFAULT NULL,
+  `nama_obat` varchar(100) NOT NULL,
+  `harga_beli_obat` int(11) NOT NULL,
+  `jumlah_obat` int(11) NOT NULL,
+  `subharga_beli_obat` int(11) NOT NULL,
+  PRIMARY KEY (`id_pembelian_obat`),
+  KEY `id_pembelian` (`id_pembelian`),
+  KEY `id_obat` (`id_obat`),
+  CONSTRAINT `td_pembelian_obat_ibfk_1` FOREIGN KEY (`id_pembelian`) REFERENCES `tt_pembelian` (`id_pembelian`) ON DELETE CASCADE,
+  CONSTRAINT `td_pembelian_obat_ibfk_2` FOREIGN KEY (`id_obat`) REFERENCES `tm_obat` (`id_obat`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="td_penjualan_obat" view="colnames">
+<left>88</left>
+<top>161</top>
+<width>177</width>
+<height>191</height>
+<sql_create_table>CREATE TABLE `td_penjualan_obat` (
+  `id_penjualan_obat` int(11) NOT NULL AUTO_INCREMENT,
+  `id_penjualan` int(11) NOT NULL,
+  `id_obat` int(11) DEFAULT NULL,
+  `id_obat_stok` int(11) DEFAULT NULL,
+  `nama_obat` varchar(100) NOT NULL,
+  `harga_jual_obat` int(11) NOT NULL,
+  `jumlah_obat` int(11) NOT NULL,
+  `subharga_jual_obat` int(11) NOT NULL,
+  PRIMARY KEY (`id_penjualan_obat`),
+  KEY `id_penjualan` (`id_penjualan`),
+  KEY `id_obat_stok` (`id_obat_stok`),
+  KEY `id_obat` (`id_obat`),
+  CONSTRAINT `td_penjualan_obat_ibfk_1` FOREIGN KEY (`id_penjualan`) REFERENCES `tt_penjualan` (`id_penjualan`) ON DELETE CASCADE,
+  CONSTRAINT `td_penjualan_obat_ibfk_2` FOREIGN KEY (`id_obat_stok`) REFERENCES `td_obat_stok` (`id_obat_stok`) ON DELETE SET NULL
+) ENGINE=InnoDB AUTO_INCREMENT=117 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="bulan" view="colnames">
+<left>162</left>
+<top>404</top>
+<width>109</width>
+<height>101</height>
+<sql_create_table>CREATE TABLE `bulan` (
+  `nomor_bulan` int(11) NOT NULL,
+  `nama_bulan` varchar(50) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tm_kategori" view="colnames">
+<left>297</left>
+<top>405</top>
+<width>135</width>
+<height>119</height>
+<sql_create_table>CREATE TABLE `tm_kategori` (
+  `id_kategori` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_kategori` varchar(50) NOT NULL,
+  `deskripsi_kategori` varchar(200) NOT NULL,
+  PRIMARY KEY (`id_kategori`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tm_lokasi" view="colnames">
+<left>306</left>
+<top>530</top>
+<width>123</width>
+<height>100</height>
+<sql_create_table>CREATE TABLE `tm_lokasi` (
+  `id_lokasi` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_lokasi` varchar(50) NOT NULL,
+  `deskripsi_lokasi` varchar(200) NOT NULL,
+  PRIMARY KEY (`id_lokasi`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tm_obat" view="colnames">
+<left>466</left>
+<top>291</top>
+<width>127</width>
+<height>223</height>
+<sql_create_table>CREATE TABLE `tm_obat` (
+  `id_obat` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_obat` varchar(100) NOT NULL,
+  `deskripsi_obat` text NOT NULL,
+  `stok_obat` int(11) NOT NULL,
+  `kadaluarsa_obat` date NOT NULL,
+  `harga_beli_obat` int(11) NOT NULL,
+  `harga_jual_obat` int(11) NOT NULL,
+  `id_unit` int(11) NOT NULL,
+  `id_kategori` int(11) NOT NULL,
+  `id_lokasi` int(11) NOT NULL,
+  PRIMARY KEY (`id_obat`),
+  KEY `id_unit` (`id_unit`),
+  KEY `id_lokasi` (`id_lokasi`),
+  KEY `id_kategori` (`id_kategori`),
+  CONSTRAINT `tm_obat_ibfk_1` FOREIGN KEY (`id_unit`) REFERENCES `tm_unit` (`id_unit`),
+  CONSTRAINT `tm_obat_ibfk_2` FOREIGN KEY (`id_kategori`) REFERENCES `tm_kategori` (`id_kategori`),
+  CONSTRAINT `tm_obat_ibfk_3` FOREIGN KEY (`id_lokasi`) REFERENCES `tm_lokasi` (`id_lokasi`)
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tm_pemasok" view="colnames">
+<left>993</left>
+<top>280</top>
+<width>132</width>
+<height>131</height>
+<sql_create_table>CREATE TABLE `tm_pemasok` (
+  `id_pemasok` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_pemasok` varchar(100) NOT NULL,
+  `alamat_pemasok` varchar(200) NOT NULL,
+  `telepon_pemasok` varchar(20) NOT NULL,
+  PRIMARY KEY (`id_pemasok`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tm_pengguna" view="colnames">
+<left>468</left>
+<top>84</top>
+<width>149</width>
+<height>131</height>
+<sql_create_table>CREATE TABLE `tm_pengguna` (
+  `id_pengguna` int(11) NOT NULL AUTO_INCREMENT,
+  `username_pengguna` varchar(50) NOT NULL,
+  `password_pengguna` varchar(100) NOT NULL,
+  `level_pengguna` enum('Pemilik','Admin','Kasir') NOT NULL,
+  PRIMARY KEY (`id_pengguna`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tm_unit" view="colnames">
+<left>630</left>
+<top>462</top>
+<width>113</width>
+<height>116</height>
+<sql_create_table>CREATE TABLE `tm_unit` (
+  `id_unit` int(11) NOT NULL AUTO_INCREMENT,
+  `nama_unit` varchar(50) NOT NULL,
+  `deskripsi_unit` varchar(200) NOT NULL,
+  PRIMARY KEY (`id_unit`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tt_pembelian" view="colnames">
+<left>824</left>
+<top>84</top>
+<width>139</width>
+<height>177</height>
+<sql_create_table>CREATE TABLE `tt_pembelian` (
+  `id_pembelian` int(11) NOT NULL AUTO_INCREMENT,
+  `kode_pembelian` varchar(50) NOT NULL,
+  `tanggal_pembelian` date NOT NULL,
+  `jumlah_pembelian` int(11) NOT NULL,
+  `total_pembelian` int(11) NOT NULL,
+  `id_pemasok` int(11) NOT NULL,
+  `id_pengguna` int(11) NOT NULL,
+  PRIMARY KEY (`id_pembelian`),
+  KEY `id_pemasok` (`id_pemasok`),
+  KEY `id_pengguna` (`id_pengguna`),
+  CONSTRAINT `tt_pembelian_ibfk_1` FOREIGN KEY (`id_pemasok`) REFERENCES `tm_pemasok` (`id_pemasok`),
+  CONSTRAINT `tt_pembelian_ibfk_2` FOREIGN KEY (`id_pengguna`) REFERENCES `tm_pengguna` (`id_pengguna`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+<table name="tt_penjualan" view="colnames">
+<left>297</left>
+<top>64</top>
+<width>136</width>
+<height>177</height>
+<sql_create_table>CREATE TABLE `tt_penjualan` (
+  `id_penjualan` int(11) NOT NULL AUTO_INCREMENT,
+  `kode_penjualan` varchar(50) NOT NULL,
+  `tanggal_penjualan` date NOT NULL,
+  `jumlah_penjualan` int(11) NOT NULL,
+  `total_penjualan` int(11) NOT NULL,
+  `nama_pembeli` varchar(50) NOT NULL,
+  `id_pengguna` int(11) NOT NULL,
+  PRIMARY KEY (`id_penjualan`),
+  KEY `id_pengguna` (`id_pengguna`),
+  CONSTRAINT `tt_penjualan_ibfk_1` FOREIGN KEY (`id_pengguna`) REFERENCES `tm_pengguna` (`id_pengguna`)
+) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=latin1</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>

@@ -1,0 +1,5 @@
+Data master
+- Daftar obat : tambahkan untuk ditampilkan stok, unit, dan aksi (edit dan hapus)
+- obat habis : obat hampir habis stok kurang dari 10, ditampilkan di obat hampir habis
+Transaksi
+- penjualan dan pembelian : pada bagian aksi ditambahkan buton hapus dan buton lihat penjualan/pmbelian, kemudian cetak struk penjualan/pembelian
